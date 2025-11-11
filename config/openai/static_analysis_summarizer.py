@@ -76,15 +76,15 @@ if __name__ == "__main__":
     checkstyle_findings = parse_checkstyle(checkstyle_xml)
     all_findings = spotbugs_findings + checkstyle_findings
 
-    print("\n--- SpotBugs Findings ---")
-    for f in spotbugs_findings:
-        print(f)
+    #print("\n--- SpotBugs Findings ---")
+    #for f in spotbugs_findings:
+        #print(f)
 
-    print("\n--- Checkstyle Findings ---")
-    for f in checkstyle_findings:
-        print(f)
+    #print("\n--- Checkstyle Findings ---")
+    #for f in checkstyle_findings:
+        #print(f)
     
-    print("\n--- Invoking LLM summarization ---")
+    #print("\n--- Invoking LLM summarization ---")
     # OpenAI API key (from environment variable for security)
     openai_api_key = os.getenv("OPENAI_API_KEY")
     if not openai_api_key:
@@ -94,6 +94,6 @@ if __name__ == "__main__":
     summary = summarize_findings(all_findings, openai_api_key)
 
     # Output the summary (for manual posting or further automation)
-    print("\n===== Static Analysis Summary for PR Comment =====\n")
+    print("\n===== Static Analysis Summary =====\n")
     print(summary)
     print("\n=================================================\n")
