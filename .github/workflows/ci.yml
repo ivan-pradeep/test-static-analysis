@@ -46,7 +46,7 @@ jobs:
           path: build/reports/checkstyle/main.xml
 
       - name: Summarize Static Analysis Results
-        run: python config/openai/python static_analysis_summarizer.py
+        run: python config/openai/static_analysis_summarizer.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
