@@ -66,10 +66,10 @@ def summarize_findings(findings, openai_api_key):
 
 if __name__ == "__main__":
     # Paths to the XML reports
-    spotbugs_xml =  r"C:\Users\pradeep.b.krishnan\APAC_Hackathon\poc_demo_repo\test-static-analysis\build\reports\spotbugs\main.xml"
-    checkstyle_xml = r"C:\Users\pradeep.b.krishnan\APAC_Hackathon\poc_demo_repo\test-static-analysis\build\reports\checkstyle\main.xml"
-    #spotbugs_xml = "build/reports/spotbugs/main.xml"
-    #checkstyle_xml = "build/reports/checkstyle/main.xml"
+    #spotbugs_xml =  r"C:\Users\pradeep.b.krishnan\APAC_Hackathon\poc_demo_repo\test-static-analysis\build\reports\spotbugs\main.xml"
+    #checkstyle_xml = r"C:\Users\pradeep.b.krishnan\APAC_Hackathon\poc_demo_repo\test-static-analysis\build\reports\checkstyle\main.xml"
+    spotbugs_xml = "build/reports/spotbugs/main.xml"
+    checkstyle_xml = "build/reports/checkstyle/main.xml"
 
     # Parse findings
     spotbugs_findings = parse_spotbugs(spotbugs_xml)

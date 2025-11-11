@@ -16,19 +16,45 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Phython dependencies
+        run: pip install openai
+
+      - name: Install GitHub CLI
+        run: sudo apt-get update && sudo apt-get install -y gh
 
       - name: Build and run analysis
         run: ./gradlew check
 
       - name: Upload SpotBugs report
+        if: false  # Disabled, but still present for future use
         uses: actions/upload-artifact@v4
         with:
           name: spotbugs-report
           path: build/reports/spotbugs/main.xml
 
       - name: Upload Checkstyle report
+        if: false  # Disabled, but still present for future use
         uses: actions/upload-artifact@v4
         with:
           name: checkstyle-report
 
           path: build/reports/checkstyle/main.xml
+
+      - name: Summarize Static Analysis Results
+        run: config/openai/python static_analysis_summarizer.py
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Summarize and comment on PR
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          summary="$(python static_analysis_summarizer.py)"
+          echo "$summary"
+          gh pr comment ${{ github.event.pull_request.number }} --body "$summary"
