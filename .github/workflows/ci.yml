@@ -30,6 +30,11 @@ jobs:
       - name: Build and run analysis
         run: ./gradlew check
 
+      - name: Print PR source info
+        run: |
+          echo "Head repo: ${{ github.event.pull_request.head.repo.full_name }}"
+          echo "Base repo: ${{ github.repository }}"
+
       - name: Upload SpotBugs report (disabled)
         if: false  # Disabled, but still present for future use
         uses: actions/upload-artifact@v4
