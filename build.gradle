@@ -1,0 +1,85 @@
+plugins {
+    id 'java'
+    id 'com.github.spotbugs' version '5.0.14'
+    id 'checkstyle'
+}
+
+group = 'com.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // No external dependencies needed
+}
+
+checkstyle {
+    toolVersion = '10.12.1'
+
+    configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
+    ignoreFailures = true // Set to true if you want build to continue on violations
+    configProperties = [
+        'checkstyle.cache.file': "${buildDir}/checkstyle.cache"
+    ]
+}
+
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+}
+
+
+spotbugs {
+    toolVersion = '4.7.3'
+    effort = 'max'
+    reportLevel = 'low'
+    ignoreFailures  = true
+}
+
+tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+    showProgress = true
+}
+
+import groovy.util.XmlSlurper
+
+tasks.register('printSpotBugsFindings') {
+    dependsOn tasks.spotbugsMain
+    doLast {
+        def spotBugsReport = file("$buildDir/reports/spotbugs/main.xml")
+        if (spotBugsReport.exists()) {
+            def xml = new XmlSlurper().parse(spotBugsReport)
+            def bugs = xml.BugInstance
+            if (bugs.size() == 0) {
+                println "\nNo SpotBugs issues found!"
+            } else {
+                println "\n=== SpotBugs Findings ==="
+                bugs.each { bug ->
+                    def type = bug.'@type'
+                    def category = bug.'@category'
+                    def message = bug.ShortMessage.text()
+                    def className = bug.Class.'@classname'
+                    def methodName = bug.Method?.'@name'
+                    def line = bug.SourceLine.'@start'
+                    println "[$category][$type] $message at $className.$methodName (line $line)"
+                }
+                println "=== End of SpotBugs Findings ===\n"
+            }
+        } else {
+            println "SpotBugs report not found."
+        }
+    }
+}
+
+// Make 'check' depend on the printer
+tasks.named('check') {
+    dependsOn tasks.named('printSpotBugsFindings')
+}

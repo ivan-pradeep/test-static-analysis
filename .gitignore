@@ -1,0 +1,37 @@
+# Gradle build output
+/build/
+/.gradle/
+
+# Eclipse IDE files
+*.classpath
+*.project
+*.settings/
+
+# IntelliJ IDEA files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code settings
+.vscode/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Java output
+out/
+For your specific request, just ensure at least the following is present:
+
+/build/
+Place this .gitignore file in your project root (next to build.gradle).
+Now, the build directory will be ignored by git.
+
+Would you like instructions for adding .gitignore if you’re using GitHub or GitLab web UI, or are you working locally?
+
+
+Chat query
