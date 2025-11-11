@@ -1,0 +1,33 @@
+name: Static Analysis & Summary
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build and run analysis
+        run: ./gradlew check
+
+      - name: Upload SpotBugs report
+        uses: actions/upload-artifact@v3
+        with:
+          name: spotbugs-report
+          path: build/reports/spotbugs/main.xml
+
+      - name: Upload Checkstyle report
+        uses: actions/upload-artifact@v3
+        with:
+          name: checkstyle-report
+          path: build/reports/checkstyle/main.html
