@@ -38,8 +38,6 @@ def parse_checkstyle(xml_path):
 
 def summarize_findings(findings, openai_api_key):
     prompt = (
-
-    prompt = (
         "You are helping generate a human-readable summary of static code analysis reports for a Java project.\n"
         "I will provide SpotBugs and Checkstyle report outputs (in XML, JSON, or plain text).\n\n"
         "Please:\n"
