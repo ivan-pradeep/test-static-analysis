@@ -2,6 +2,7 @@ package com.example;
 
 public class TestApp {
     private static int unusedField; // SpotBugs: Unused field
+    private static String unusedString; //unused field
 
     public static void main(String[] args) {
         TestApp app = new TestApp();
@@ -28,4 +29,5 @@ public class TestApp {
     public int hashCode() { // SpotBugs: Bad hashCode
         return 42; // Magic number, bad hash
     }
+
 }
